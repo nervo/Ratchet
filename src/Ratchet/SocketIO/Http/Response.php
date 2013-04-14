@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\React\Http;
+namespace Ratchet\SocketIO\Http;
 
 use Evenement\EventEmitter;
 use Guzzle\Http\Message\Response as GuzzleResponse;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Version\Version1;
+namespace Ratchet\SocketIO\Protocol\Version1;
 
 use Ratchet\AbstractConnectionDecorator;
 use Ratchet\ConnectionInterface;
@@ -17,7 +17,7 @@ class Connection extends AbstractConnectionDecorator
     {
         parent::__construct($conn);
 
-        $this->SocketIO->sessionId = uniqid();
+        $this->socketIO->sessionId = uniqid();
     }
     
     public function send($msg)

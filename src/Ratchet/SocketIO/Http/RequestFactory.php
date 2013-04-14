@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Guzzle\Http\Message;
+namespace Ratchet\SocketIO\Http;
 
 use Guzzle\Http\Message\RequestFactory as GuzzleRequestFactory;
 use Guzzle\Http\EntityBody;

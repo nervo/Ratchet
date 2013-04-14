@@ -1,17 +1,16 @@
 <?php
 
-namespace Ratchet\SocketIO;
+namespace Ratchet\SocketIO\Http;
 
 use Ratchet\MessageInterface;
 use Ratchet\ConnectionInterface;
-use Ratchet\SocketIO\Guzzle\Http\Message\RequestFactory;
 
 /**
  * This class receives streaming data from a client request
  * and parses HTTP headers, returning a Guzzle Request object
  * once it's been buffered
  */
-class HttpRequestParser implements MessageInterface
+class RequestParser implements MessageInterface
 {
     const EOM = "\r\n\r\n";
 

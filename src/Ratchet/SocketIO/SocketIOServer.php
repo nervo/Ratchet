@@ -3,49 +3,34 @@
 namespace Ratchet\SocketIO;
 
 use Ratchet\MessageComponentInterface;
-//use Ratchet\WebSocket\WsServerInterface;
 use Ratchet\ConnectionInterface;
-use Ratchet\SocketIO\Version;
-use Ratchet\SocketIO\Transport;
-use Guzzle\Http\Message\Response;
+use Ratchet\SocketIO\Protocol;
+use Ratchet\SocketIO\Http;
+
 
 class SocketIOServer implements MessageComponentInterface
 //, WsServerInterface
 {
     /**
-     * Options
-     * 
-     * @var array
-     */
-    protected $options = array();
-    
-    /**
      * Buffers incoming HTTP requests returning a Guzzle Request when coalesced
      * @var HttpRequestParser
      * @note May not expose this in the future, may do through facade methods
      */
-    public $reqParser;
+    public $httpRequestParser;
 
     /**
-     * Manage the various WebSocket versions to support
-     * @var VersionManager
+     * Manage the various SpcketIO protocols to support
+     * @var ProtocolManager
      * @note May not expose this in the future, may do through facade methods
      */
-    public $versioner;
+    public $protocolManager;
     
-    /**
-     * Manage the various Socket.IO transports to support
-     * 
-     * @var \Ratchet\SocketIO\TransportManager
-     */
-    public $transporter;
-
     /**
      * Decorated component
      * 
      * @var \Ratchet\MessageComponentInterface
      */
-    protected $_decorating;
+    protected $component;
     
     /**
      * Connections
@@ -61,25 +46,17 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function __construct(SocketIOServerInterface $component, array $options = array())
     {
-        // Options
-        $this->options = $options;
-        
         //$this->socketIOProtocol = new ServerProtocol(new TopicManager($app));
         
         // Request parser
-        $this->reqParser = new HttpRequestParser();
+        $this->httpRequestParser = new Http\RequestParser();
         
-        // Versioner
-        $this->versioner = new VersionManager();
-        $this->versioner
-            ->enableVersion(new Version\Version1());
+        // Protocol manager
+        $this->protocolManager = new Protocol\ProtocolManager();
+        $this->protocolManager
+            ->enableProtocol(new Protocol\Version1\Protocol($options));
         
-        // Transporter
-        $this->transporter = new TransportManager();
-        $this->transporter
-            ->enableTransport(new Transport\WebSocket());
-
-        $this->_decorating = $component;
+        $this->component = $component;
         
         // Connections
         $this->connections = new \SplObjectStorage();
@@ -92,8 +69,8 @@ class SocketIOServer implements MessageComponentInterface
     {
         var_dump('---> onOpen');
 
-        $conn->SocketIO = new \StdClass();
-        $conn->SocketIO->established = false;
+        $conn->socketIO = new \StdClass();
+        //$conn->socketIO->handshaked = false;
 
         //var_dump('================================================');
         //var_dump($conn);
@@ -104,87 +81,48 @@ class SocketIOServer implements MessageComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function onMessage(ConnectionInterface $from, $msg)
+    public function onMessage(ConnectionInterface $connection, $message)
     {
         
         var_dump('---> onMessage');
-        //var_dump(get_class($from));
-        //var_dump($msg);
-        //$this->socketIOProtocol->onMessage($from, $msg);
+        //var_dump(get_class($connection));
+        //var_dump($message);
+        //
+        //$this->socketIOProtocol->onMessage($connection, $message);
+        
+        //if (true === $connection->socketIO->handshaked) {
+            //var_dump('-> post handshaked');
+            //return $connection->socketIO->protocol->onMessage($this->connections[$connection], $message);
+        //}
 
         try {
-            if (null === ($request = $this->reqParser->onMessage($from, $msg))) {
+            if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
                 return;
             }
         } catch (\OverflowException $oe) {
-            return $this->close($from, 413);
+            return $this->close($connection, 413);
         }
 
-        if (!$this->versioner->isVersionEnabled($request)) {
-            return $this->close($from);
-        }
-
-        //$from->SocketIO->request = $request;
-        $from->SocketIO->version = $this->versioner->getVersion($request);
-
-        //var_dump($from->SocketIO->version);
-        //die;
-        
-        // Get upgraded connection ...
-        //$upgraded = $from->SocketIO->version->upgradeConnection($from, $this->_decorating);
-        $upgraded = $from->SocketIO->version->upgradeConnection($from);
-        //var_dump($upgraded);
-        //die;
-        
-        //var_dump($from->SocketIO->version);
-        //die;
-
-
-        // Handshake
-        try {
-            $from->SocketIO->version->handshake(
-                $request,
-                $upgraded,
-                $this->options,
-                $this->transporter
-            );
-        } catch (\UnderflowException $e) {
-            return;
-        }
-
-        // Attach upgraded connection
-        $this->connections->attach($from, $upgraded);
-        
-        //$upgraded->SocketIO->established = true;
-        $from->SocketIO->established = true;
-
-        //var_dump($response);
-        
         /*
+        if (!$this->protocolManager->isProtocolEnabled($request)) {
+            return $this->close($connection);
+        }
+         * 
+         */
+
+        $connection->socketIO->request = $request;
         
-        $body = '51pazOKK5VhTDiZWne2B:60:60:websocket,htmlfile,xhr-polling,jsonp-polling';
-        
-        $response
-            ->setHeader('Content-Type', 'text/plain')
-            ->setHeader('Connection', 'keep-alive')
-            ->setHeader('Transfer-Encoding', 'chunked')
-            ->setHeader('access-control-allow-origin', (string) $request->getHeader('origin'))
-            ->setHeader('Access-Control-Allow-Credentials', 'true')
-            ->setBody(
-                dechex(strlen($body)) .
-                "\r\n" .
-                $body .
-                "\r\n" .
-                "0\r\n\r\n"
+        // Get protocol
+        try {
+            $connection->socketIO->protocol = $this->protocolManager->getRequestProtocol(
+                $connection->socketIO->request
             );
+        } catch (\InvalidArgumentException $e) {
+            return $this->close($connection);
+        }
         
-        $from->send((string) $response);
-        
-        //var_dump('ayé');
-        //var_dump((string) $response);
-        
-        return $from->close();
-        */
+        // Transmit message to protocol
+        $connection->socketIO->protocol->onMessage($connection, $message);
     }
 
     /**
@@ -220,21 +158,14 @@ class SocketIOServer implements MessageComponentInterface
 
     /**
      * Close a connection with an HTTP response
-     * @param  \Ratchet\ConnectionInterface $conn
+     * @param  \Ratchet\ConnectionInterface $connection
      * @param  int                          $code HTTP status code
      * @return void
      */
-    protected function close(ConnectionInterface $conn, $code = 400)
+    protected function close(ConnectionInterface $connection, $code = 400)
     {
-        /*
-        $response = new Response($code, array(
-            'X-Powered-By' => \Ratchet\VERSION
-        ));
-        */
-        
-        $response = new Response($code);
-
-        $conn->send((string) $response);
-        $conn->close();
+        $response = new Http\Response($connection);
+        $response->writeHead($code);
+        $response->end();
     }
 }
