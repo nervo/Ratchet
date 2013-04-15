@@ -3,14 +3,25 @@
 namespace Ratchet\SocketIO\Protocol\Version1\Transport\WebSocket;
 
 use Ratchet\SocketIO\Protocol\Version1\Transport\TransportInterface;
+use Ratchet\SocketIO\Message;
 use Ratchet\ConnectionInterface;
 use Guzzle\Http\Message\RequestInterface;
+use Ratchet\WebSocket\WsServer;
 
 /**
  * The WebSocket transport
  */
 class Transport implements TransportInterface
 {
+    protected $wsServer;
+    
+    public function __construct(Message\MessageProxy $messageProxy)
+    {
+        $this->wsServer = new WsServer(
+            $messageProxy
+        );
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -41,6 +52,9 @@ class Transport implements TransportInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        var_dump('---> WebSocket transport onMessage');
+        var_dump('Protocol\Version1\Transport\WebSocket\Transport::onMessage');
+        
+        $this->wsServer->onOpen($connection);
+        $this->wsServer->onMessage($connection, $message);
     }
 }

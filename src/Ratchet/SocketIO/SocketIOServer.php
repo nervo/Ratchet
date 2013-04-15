@@ -6,10 +6,9 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\SocketIO\Protocol;
 use Ratchet\SocketIO\Http;
-
+use Ratchet\SocketIO\Message;
 
 class SocketIOServer implements MessageComponentInterface
-//, WsServerInterface
 {
     /**
      * Buffers incoming HTTP requests returning a Guzzle Request when coalesced
@@ -24,58 +23,39 @@ class SocketIOServer implements MessageComponentInterface
      * @note May not expose this in the future, may do through facade methods
      */
     public $protocolManager;
-    
-    /**
-     * Decorated component
-     * 
-     * @var \Ratchet\MessageComponentInterface
-     */
-    protected $component;
-    
-    /**
-     * Connections
-     * 
-     * @var \SplObjectStorage
-     */
-    protected $connections;
 
     /**
      * This class just makes it 1 step easier to use Topic objects in WAMP
      * If you're looking at the source code, look in the __construct of this
      *  class and use that to make your application instead of using this
      */
-    public function __construct(SocketIOServerInterface $component, array $options = array())
+    public function __construct(SocketIOServerInterface $server, array $options = array())
     {
-        //$this->socketIOProtocol = new ServerProtocol(new TopicManager($app));
-        
         // Request parser
         $this->httpRequestParser = new Http\RequestParser();
+
+        // Message proxy
+        $messageProxy = new Message\MessageProxy($server);
         
         // Protocol manager
         $this->protocolManager = new Protocol\ProtocolManager();
         $this->protocolManager
-            ->enableProtocol(new Protocol\Version1\Protocol($options));
-        
-        $this->component = $component;
-        
-        // Connections
-        $this->connections = new \SplObjectStorage();
+            ->enableProtocol(
+                new Protocol\Version1\Protocol(
+                    $messageProxy,
+                    $options
+                )
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onOpen(ConnectionInterface $conn)
+    public function onOpen(ConnectionInterface $connection)
     {
-        var_dump('---> onOpen');
+        var_dump('SocketIOServer::onOpen');
 
-        $conn->socketIO = new \StdClass();
-        //$conn->socketIO->handshaked = false;
-
-        //var_dump('================================================');
-        //var_dump($conn);
-        //var_dump('================================================');
-        //$this->socketIOProtocol->onOpen($conn);
+        $connection->socketIO = new \StdClass();
     }
 
     /**
@@ -84,16 +64,7 @@ class SocketIOServer implements MessageComponentInterface
     public function onMessage(ConnectionInterface $connection, $message)
     {
         
-        var_dump('---> onMessage');
-        //var_dump(get_class($connection));
-        //var_dump($message);
-        //
-        //$this->socketIOProtocol->onMessage($connection, $message);
-        
-        //if (true === $connection->socketIO->handshaked) {
-            //var_dump('-> post handshaked');
-            //return $connection->socketIO->protocol->onMessage($this->connections[$connection], $message);
-        //}
+        var_dump('SocketIOServer::onMessage');
 
         try {
             if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
@@ -102,13 +73,6 @@ class SocketIOServer implements MessageComponentInterface
         } catch (\OverflowException $oe) {
             return $this->close($connection, 413);
         }
-
-        /*
-        if (!$this->protocolManager->isProtocolEnabled($request)) {
-            return $this->close($connection);
-        }
-         * 
-         */
 
         $connection->socketIO->request = $request;
         
@@ -128,33 +92,18 @@ class SocketIOServer implements MessageComponentInterface
     /**
      * {@inheritdoc}
      */
-    public function onClose(ConnectionInterface $conn)
+    public function onClose(ConnectionInterface $connection)
     {
-        var_dump('onClose');
-        //$this->socketIOProtocol->onClose($conn);
-        //var_dump($conn);
+        var_dump('SocketIOServer::onClose');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onError(ConnectionInterface $conn, \Exception $e)
+    public function onError(ConnectionInterface $connection, \Exception $e)
     {
-        var_dump('---> onError');
-        //var_dump($conn);
-        var_dump(get_class($e));
-        //$this->socketIOProtocol->onError($conn, $e);
+        var_dump('SocketIOServer::onError');
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*
-    public function getSubProtocols()
-    {
-        return $this->socketIOProtocol->getSubProtocols();
-    }
-    */
 
     /**
      * Close a connection with an HTTP response
