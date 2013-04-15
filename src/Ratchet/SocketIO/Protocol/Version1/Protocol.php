@@ -130,29 +130,31 @@ class Protocol implements ProtocolInterface
     {
         var_dump('Protocol\Version1\Protocol::onMessage');
         
-        // Get request
-        $request = $connection->socketIO->request;
+        if (!isset($connection->socketIO->transport)) {
+            // Get request
+            $request = $connection->socketIO->request;
         
-        // Get session id
-        $sessionId = $this->sessionManager->getRequestSessionId($request);
+            // Get session id
+            $sessionId = $this->sessionManager->getRequestSessionId($request);
         
-        // No session id means handshake required
-        If (!$sessionId) {
-           $session = new Connection($connection);
-           $this->handshake($session);
-        } else {
-            // Get transport
-            try {
-                $connection->socketIO->transport = $this->transportManager->getRequestTransport(
-                    $request
-                );
-            } catch (\InvalidArgumentException $e) {
-                return $this->close($connection);
+            // No session id means handshake required
+            If (!$sessionId) {
+               $session = new Connection($connection);
+               return $this->handshake($session);
+            } else {
+                // Get transport
+                try {
+                    $connection->socketIO->transport = $this->transportManager->getRequestTransport(
+                        $request
+                    );
+                } catch (\InvalidArgumentException $e) {
+                    return $this->close($connection);
+                }
             }
-            
-            // Transmit message to transport
-            $connection->socketIO->transport->onMessage($connection, $message);
         }
+        
+        // Transmit message to transport
+        $connection->socketIO->transport->onMessage($connection, $message);
     }
     
     /**

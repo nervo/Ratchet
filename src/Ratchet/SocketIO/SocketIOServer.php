@@ -63,26 +63,27 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        
         var_dump('SocketIOServer::onMessage');
 
-        try {
-            if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
-                return;
+        if (!isset($connection->socketIO->protocol)) {
+            try {
+                if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
+                    return;
+                }
+            } catch (\OverflowException $oe) {
+                return $this->close($connection, 413);
             }
-        } catch (\OverflowException $oe) {
-            return $this->close($connection, 413);
-        }
 
-        $connection->socketIO->request = $request;
+            $connection->socketIO->request = $request;
         
-        // Get protocol
-        try {
-            $connection->socketIO->protocol = $this->protocolManager->getRequestProtocol(
-                $connection->socketIO->request
-            );
-        } catch (\InvalidArgumentException $e) {
-            return $this->close($connection);
+            // Get protocol
+            try {
+                $connection->socketIO->protocol = $this->protocolManager->getRequestProtocol(
+                    $connection->socketIO->request
+                );
+            } catch (\InvalidArgumentException $e) {
+                return $this->close($connection);
+            }
         }
         
         // Transmit message to protocol

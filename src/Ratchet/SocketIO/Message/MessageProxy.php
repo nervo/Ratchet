@@ -37,11 +37,9 @@ class MessageProxy implements MessageComponentInterface
     {
         var_dump('Message\MessageProxy::onOpen');
         
-        $connection->send(
-            $this->formatMessage(
-                self::MESSAGE_TYPE_CONNECT
-            )
-        );
+        $message = new ConnectMessage();
+        
+        $connection->send((string) $message);
         
         $this->server->onOpen($connection);
     }
@@ -63,5 +61,15 @@ class MessageProxy implements MessageComponentInterface
     public function onMessage(ConnectionInterface $connection, $message)
     {
         var_dump('Message\MessageProxy::onMessage');
+        var_dump('--> ' . $message);
+        
+        $message = Message::parse($message);
+        
+        if ($message) {
+            $message->handleServerConnection(
+                $this->server,
+                $connection
+            );
+        }
     }
 }
