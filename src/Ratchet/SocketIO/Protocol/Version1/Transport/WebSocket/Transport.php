@@ -52,9 +52,6 @@ class Transport implements TransportInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        //var_dump('Protocol\Version1\Transport\WebSocket\Transport::onMessage : ' . $message);
-        var_dump('Protocol\Version1\Transport\WebSocket\Transport::onMessage');
-        
         if (!isset($connection->WebSocket)) {
             $this->wsServer->onOpen($connection);
         }

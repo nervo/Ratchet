@@ -53,8 +53,6 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onOpen(ConnectionInterface $connection)
     {
-        var_dump('SocketIOServer::onOpen');
-
         $connection->socketIO = new \StdClass();
     }
 
@@ -63,8 +61,6 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        var_dump('SocketIOServer::onMessage');
-
         if (!isset($connection->socketIO->protocol)) {
             try {
                 if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
@@ -95,7 +91,6 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onClose(ConnectionInterface $connection)
     {
-        var_dump('SocketIOServer::onClose');
     }
 
     /**
@@ -103,7 +98,6 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $connection, \Exception $e)
     {
-        var_dump('SocketIOServer::onError');
     }
 
     /**

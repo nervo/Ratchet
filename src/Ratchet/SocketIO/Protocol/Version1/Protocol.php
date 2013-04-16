@@ -128,8 +128,6 @@ class Protocol implements ProtocolInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        var_dump('Protocol\Version1\Protocol::onMessage');
-        
         if (!isset($connection->socketIO->transport)) {
             // Get request
             $request = $connection->socketIO->request;
