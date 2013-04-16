@@ -36,25 +36,6 @@ class Message
     protected $data;
 
     /**
-     * Constructor
-     * 
-     * @param int        $id
-     * @param string     $endpoint
-     * @param array|null $data
-     */
-    public function __construct($id = null, $endpoint = null, array $data = null)
-    {
-        // Id
-        $this->id = is_null($id) ? null : (int) $id;
-        
-        // Endpoint
-        $this->endpoint = is_null($endpoint) ? null : (string) $endpoint;
-        
-        // Data
-        $this->data = $data;
-    }
-    
-    /**
      * Get type
      * 
      * @return int
@@ -127,16 +108,11 @@ class Message
         
         switch ($parts[0]) {
             case self::TYPE_CONNECT:
-                return new ConnectMessage(
-                    isset($parts[1]) ? $parts[1] : null,
-                    isset($parts[2]) ? $parts[2] : null
-                );
+                return ConnectMessage::fromArray($parts);
+                break;
             case self::TYPE_EVENT:
-                return new EventMessage(
-                    isset($parts[1]) ? $parts[1] : null,
-                    isset($parts[2]) ? $parts[2] : null,
-                    isset($parts[3]) ? json_decode($parts[3], true) : null
-                );
+                return EventMessage::fromArray($parts);
+                break;
             default:
                 return null;
         }
