@@ -53,9 +53,33 @@ class Transport implements TransportInterface
     public function onMessage(ConnectionInterface $connection, $message)
     {
         if (!isset($connection->WebSocket)) {
-            $this->wsServer->onOpen($connection);
+            $this->onOpen($connection);
         }
         
         $this->wsServer->onMessage($connection, $message);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function onOpen(ConnectionInterface $connection)
+    {
+        $this->wsServer->onOpen($connection);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function onClose(ConnectionInterface $connection)
+    {
+        $this->wsServer->onClose($connection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onError(ConnectionInterface $connection, \Exception $e)
+    {
+        $this->wsServer->onError($connection, $e);
     }
 }

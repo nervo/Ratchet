@@ -5,7 +5,6 @@ namespace Ratchet\SocketIO\Protocol\Version1;
 use Ratchet\SocketIO\Protocol\ProtocolInterface;
 use Ratchet\SocketIO\Protocol\Version1\Transport;
 use Ratchet\SocketIO\Protocol\Version1\Session;
-use Ratchet\SocketIO\Protocol\Version1\Connection;
 use Ratchet\SocketIO\Protocol\Version1\HandshakeVerifier;
 use Ratchet\SocketIO\Http;
 use Ratchet\SocketIO\Message;
@@ -85,10 +84,7 @@ class Protocol implements ProtocolInterface
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function handshake(Connection $connection)
+    protected function handshake(ConnectionInterface $connection, $sessionId)
     {
         // Get request
         $request = $connection->socketIO->request;
@@ -112,7 +108,7 @@ class Protocol implements ProtocolInterface
             implode(
                 ':',
                 array(
-                    $connection->socketIO->sessionId,
+                    $sessionId,
                     ((bool) $this->options['heartbeat']) ? (int) $this->options['heartbeat_timeout'] : '',
                     (int) $this->options['close_timeout'],
                     implode(',', $this->transportManager->getTransportIds())
@@ -137,9 +133,14 @@ class Protocol implements ProtocolInterface
         
             // No session id means handshake required
             If (!$sessionId) {
-               $session = new Connection($connection);
-               return $this->handshake($session);
+               $this->handshake(
+                   $connection,
+                   uniqid()
+               );
+               return;
             } else {
+                // Set session id
+                $connection->socketIO->sessionId = $sessionId;
                 // Get transport
                 try {
                     $connection->socketIO->transport = $this->transportManager->getRequestTransport(
@@ -153,6 +154,33 @@ class Protocol implements ProtocolInterface
         
         // Transmit message to transport
         $connection->socketIO->transport->onMessage($connection, $message);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onOpen(ConnectionInterface $connection)
+    {
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function onClose(ConnectionInterface $connection)
+    {
+        if (isset($connection->socketIO->transport)) {
+            $connection->socketIO->transport->onClose($connection);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onError(ConnectionInterface $connection, \Exception $e)
+    {
+        if (isset($connection->socketIO->transport)) {
+            $connection->socketIO->transport->onError($connection, $e);
+        }
     }
     
     /**

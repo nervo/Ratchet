@@ -27,12 +27,10 @@ class MessageProxy implements MessageComponentInterface
         // Server
         $this->server = $server;
     }
-    
-    protected function formatMessage($type)
-    {
-        return $type . '::';
-    }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onOpen(ConnectionInterface $connection)
     {
         $message = new ConnectMessage();
@@ -42,16 +40,25 @@ class MessageProxy implements MessageComponentInterface
         $this->server->onOpen($connection);
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function onClose(ConnectionInterface $connection)
     {
         $this->server->onClose($connection);
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function onError(ConnectionInterface $connection, \Exception $e)
     {
         $this->server->onError($connection);
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function onMessage(ConnectionInterface $connection, $message)
     {
         $message = Message::parse($message);

@@ -2,13 +2,13 @@
 
 namespace Ratchet\SocketIO\Protocol;
 
-use Ratchet\MessageInterface;
+use Ratchet\MessageComponentInterface;
 use Guzzle\Http\Message\RequestInterface;
 
 /**
  * A standard interface for interacting with the various protocol of Socket.IO
  */
-interface ProtocolInterface extends MessageInterface
+interface ProtocolInterface extends MessageComponentInterface
 {
     /**
      * Although the version has a name associated with it the integer returned is the proper identification

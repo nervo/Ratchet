@@ -2,22 +2,14 @@
 
 namespace Ratchet\SocketIO;
 
-use Ratchet\ComponentInterface;
+use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
 /**
  * SocketIO server interface
  */
-interface SocketIOServerInterface extends ComponentInterface
+interface SocketIOServerInterface extends MessageComponentInterface
 {
-    /**
-     * On message
-     * 
-     * @param \Ratchet\ConnectionInterface $connection
-     * @param string $message
-     */
-    public function onMessage(ConnectionInterface $connection, $message);
-
     /**
      * On event
      * 

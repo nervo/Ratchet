@@ -77,6 +77,7 @@ class SocketIOServer implements MessageComponentInterface
                 $connection->socketIO->protocol = $this->protocolManager->getRequestProtocol(
                     $connection->socketIO->request
                 );
+                $connection->socketIO->protocol->onOpen($connection);
             } catch (\InvalidArgumentException $e) {
                 return $this->close($connection);
             }
@@ -91,6 +92,9 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onClose(ConnectionInterface $connection)
     {
+        if (isset($connection->socketIO->protocol)) {
+            $connection->socketIO->protocol->onClose($connection);
+        }
     }
 
     /**
@@ -98,6 +102,9 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $connection, \Exception $e)
     {
+        if (isset($connection->socketIO->protocol)) {
+            $connection->socketIO->protocol->onError($connection, $e);
+        }
     }
 
     /**
