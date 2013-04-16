@@ -53,7 +53,7 @@ class MessageProxy implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $connection, \Exception $e)
     {
-        $this->server->onError($connection);
+        $this->server->onError($connection, $e);
     }
     
     /**
