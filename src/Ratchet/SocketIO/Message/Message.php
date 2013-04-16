@@ -17,14 +17,14 @@ class Message
     /**
      * Id
      * 
-     * @var int
+     * @var int|null
      */
     protected $id;
     
     /**
      * Endpoint
      * 
-     * @var string
+     * @var string|null
      */
     protected $endpoint;
     
@@ -45,10 +45,10 @@ class Message
     public function __construct($id = null, $endpoint = null, array $data = null)
     {
         // Id
-        $this->id = (int) $id;
+        $this->id = is_null($id) ? null : (int) $id;
         
         // Endpoint
-        $this->endpoint = (string) $endpoint;
+        $this->endpoint = is_null($endpoint) ? null : (string) $endpoint;
         
         // Data
         $this->data = $data;
@@ -69,7 +69,7 @@ class Message
     /**
      * Get id
      * 
-     * @return int
+     * @return int|null
      */
     protected function getId()
     {
@@ -79,7 +79,7 @@ class Message
     /**
      * Get endpoint
      * 
-     * @return string
+     * @return string|null
      */
     protected function getEndpoint()
     {
