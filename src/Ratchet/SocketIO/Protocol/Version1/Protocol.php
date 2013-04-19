@@ -10,6 +10,7 @@ use Ratchet\SocketIO\Http;
 use Ratchet\SocketIO\Message;
 use Ratchet\ConnectionInterface;
 use Guzzle\Http\Message\RequestInterface;
+use React;
 
 class Protocol implements ProtocolInterface
 {
@@ -37,9 +38,10 @@ class Protocol implements ProtocolInterface
         // Options
         $this->options = array_merge(
             array(
-                'heartbeat'         => true,
-                'heartbeat_timeout' => 60,
-                'close_timeout'     => 60
+                'heartbeats'         => true,
+                'heartbeat_timeout'  => 60,
+                'heartbeat_interval' => 25,
+                'close_timeout'      => 60
             ),
             $options
         );
@@ -58,6 +60,18 @@ class Protocol implements ProtocolInterface
         
         // Handshake verifier
         $this->handshakeVerifier = new HandshakeVerifier();
+        
+        // Heartbeat loop
+        if ((bool) $this->options['heartbeats']) {
+            $loop = React\EventLoop\Factory::create();
+            $loop->addPeriodicTimer(
+                (int) $this->options['heartbeat_interval'],
+                function(){
+                    // @todo
+                }
+            );
+            $loop->run();
+        }
     }
 
     /**
@@ -135,7 +149,7 @@ class Protocol implements ProtocolInterface
             If (!$sessionId) {
                $this->handshake(
                    $connection,
-                   uniqid()
+                   uniqid('', true)
                );
                return;
             } else {
