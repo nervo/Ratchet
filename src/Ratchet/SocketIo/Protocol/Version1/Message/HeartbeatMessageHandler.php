@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1\Message;
+namespace Ratchet\SocketIo\Protocol\Version1\Message;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 use React\EventLoop;
 
@@ -23,12 +23,12 @@ class HeartbeatMessageHandler extends MessageHandler
      *
      * @param \React\EventLoop\LoopInterface              $loop
      * @param \SplObjectStorage                           $connections
-     * @param \Ratchet\SocketIO\Protocol\Version1\Options $options
+     * @param \Ratchet\SocketIo\Protocol\Version1\Options $options
      */
     public function __construct(
         EventLoop\LoopInterface $loop,
         \SplObjectStorage $connections,
-        SocketIO\Protocol\Version1\Options $options
+        SocketIo\Protocol\Version1\Options $options
     ) {
         // Connections
         $this->connections = $connections;
@@ -42,7 +42,7 @@ class HeartbeatMessageHandler extends MessageHandler
                     ->setType($this->getType());
                 // Loop on connections
                 foreach ($this->connections as $connection) {
-                    if ($connection->socketIOConnection->isEstablished()) {
+                    if ($connection->socketIoConnection->isEstablished()) {
                         $connection->send((string) $message);
                     }
                 }
@@ -61,7 +61,7 @@ class HeartbeatMessageHandler extends MessageHandler
     /**
      * {@inheritdoc}
      */
-    public function onMessage(ConnectionInterface $connection, SocketIO\Protocol\Version1\Message\Message $message)
+    public function onMessage(ConnectionInterface $connection, SocketIo\Protocol\Version1\Message\Message $message)
     {
     }
 }

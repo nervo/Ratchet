@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1\Message;
+namespace Ratchet\SocketIo\Protocol\Version1\Message;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 
 /**
@@ -13,16 +13,16 @@ class ConnectMessageHandler extends MessageHandler
     /**
      * Server
      *
-     * @var \Ratchet\SocketIO\SocketIOServerInterface
+     * @var \Ratchet\SocketIo\SocketIoServerInterface
      */
     protected $server;
 
     /**
      * Constructor
      *
-     * @param \Ratchet\SocketIO\SocketIOServerInterface $server
+     * @param \Ratchet\SocketIo\SocketIoServerInterface $server
      */
-    public function __construct(SocketIO\SocketIOServerInterface $server)
+    public function __construct(SocketIo\SocketIoServerInterface $server)
     {
         // Server
         $this->server = $server;
@@ -41,6 +41,6 @@ class ConnectMessageHandler extends MessageHandler
      */
     public function onClose(ConnectionInterface $connection)
     {
-        $this->server->onDisconnect($connection->socketIOConnection);
+        $this->server->onDisconnect($connection->socketIoConnection);
     }
 }

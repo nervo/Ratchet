@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1;
+namespace Ratchet\SocketIo\Protocol\Version1;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use React\EventLoop;
@@ -13,7 +13,7 @@ class ServerProxy implements MessageComponentInterface
     /**
      * Server
      *
-     * @var SocketIO\SocketIOServerInterface
+     * @var SocketIo\SocketIoServerInterface
      */
     protected $server;
 
@@ -27,7 +27,7 @@ class ServerProxy implements MessageComponentInterface
     /**
      * Options
      *
-     * @var \Ratchet\SocketIO\Protocol\Version1\Options
+     * @var \Ratchet\SocketIo\Protocol\Version1\Options
      */
     protected $options;
 
@@ -55,13 +55,13 @@ class ServerProxy implements MessageComponentInterface
     /**
      *  Constructor
      *
-     * @param SocketIO\SocketIOServerInterface $server
+     * @param SocketIo\SocketIoServerInterface $server
      * @param EventLoop\LoopInterface          $loop
      * @param Options                          $options
      * @param Log\LoggerInterface              $logger
      */
     public function __construct(
-        SocketIO\SocketIOServerInterface $server,
+        SocketIo\SocketIoServerInterface $server,
         EventLoop\LoopInterface $loop,
         Options $options,
         Log\LoggerInterface $logger = null
@@ -124,9 +124,9 @@ class ServerProxy implements MessageComponentInterface
     /**
      * Add message handler
      *
-     * @param \Ratchet\SocketIO\Protocol\Version1\Message\MessageHandler $handler
+     * @param \Ratchet\SocketIo\Protocol\Version1\Message\MessageHandler $handler
      *
-     * @return \Ratchet\SocketIO\Protocol\Version1\ServerProxy
+     * @return \Ratchet\SocketIo\Protocol\Version1\ServerProxy
      */
     protected function addMessageHandler(Message\MessageHandler $handler)
     {
@@ -164,16 +164,16 @@ class ServerProxy implements MessageComponentInterface
             $this->logger->debug('Protocol version 1 server proxy onMessage', array($message));
         }
 
-        if ($connection->socketIOConnection->isEstablished()) {
+        if ($connection->socketIoConnection->isEstablished()) {
 
-            $socketIOMessage = (new Message\Message())
+            $socketIoMessage = (new Message\Message())
                 ->unserialize((string) $message);
 
             foreach ($this->messageHandlers as $messageHandler) {
-                if ($messageHandler->isMessageType($socketIOMessage)) {
+                if ($messageHandler->isMessageType($socketIoMessage)) {
                     $messageHandler->onMessage(
                         $connection,
-                        $socketIOMessage
+                        $socketIoMessage
                     );
                     break;
                 }
@@ -210,8 +210,8 @@ class ServerProxy implements MessageComponentInterface
             $this->logger->debug('Protocol version 1 server proxy onError', array(get_class($e), $e->getMessage()));
         }
 
-        if ($connection->socketIOConnection->isEstablished()) {
-            $this->server->onError($connection->socketIOConnection, $e);
+        if ($connection->socketIoConnection->isEstablished()) {
+            $this->server->onError($connection->socketIoConnection, $e);
         } else {
             $connection->close();
         }

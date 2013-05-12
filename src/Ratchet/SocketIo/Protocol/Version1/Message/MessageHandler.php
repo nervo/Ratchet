@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1\Message;
+namespace Ratchet\SocketIo\Protocol\Version1\Message;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 
 /**
@@ -30,11 +30,11 @@ abstract class MessageHandler
      * On message
      *
      * @param \Ratchet\ConnectionInterface $connection
-     * @param \Ratchet\SocketIO\Protocol\Version1\Message\Message
+     * @param \Ratchet\SocketIo\Protocol\Version1\Message\Message
      */
     public function onMessage(
         ConnectionInterface $connection,
-        SocketIO\Protocol\Version1\Message\Message $message
+        SocketIo\Protocol\Version1\Message\Message $message
     ) {
     }
 
@@ -50,7 +50,7 @@ abstract class MessageHandler
     /**
      * Is message type
      *
-     * @param \Ratchet\SocketIO\Protocol\Version1\Message\Message $message
+     * @param \Ratchet\SocketIo\Protocol\Version1\Message\Message $message
      *
      * @return bool
      */

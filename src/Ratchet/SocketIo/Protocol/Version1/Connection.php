@@ -1,26 +1,26 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1;
+namespace Ratchet\SocketIo\Protocol\Version1;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\AbstractConnectionDecorator;
 
 /**
  * Protocol version 1 connection
  */
-class Connection extends AbstractConnectionDecorator implements SocketIO\SocketIOConnectionInterface
+class Connection extends AbstractConnectionDecorator implements SocketIo\SocketIoConnectionInterface
 {
     /**
      * Protocol
      *
-     * @var \Ratchet\SocketIO\Protocol\ProtocolInterface
+     * @var \Ratchet\SocketIo\Protocol\ProtocolInterface
      */
     protected $protocol;
 
     /**
      * Transport
      *
-     * @var \Ratchet\SocketIO\Transport\TransportInterface
+     * @var \Ratchet\SocketIo\Transport\TransportInterface
      */
     protected $transport;
 
@@ -41,13 +41,13 @@ class Connection extends AbstractConnectionDecorator implements SocketIO\SocketI
     /**
      * Constructor
      *
-     * @param \Ratchet\SocketIO\Protocol\ProtocolInterface   $protocol
-     * @param \Ratchet\SocketIO\Transport\TransportInterface $transport
+     * @param \Ratchet\SocketIo\Protocol\ProtocolInterface   $protocol
+     * @param \Ratchet\SocketIo\Transport\TransportInterface $transport
      * @param string                                         $sessionId
      */
     public function __construct(
-        SocketIO\Protocol\ProtocolInterface $protocol,
-        SocketIO\Transport\TransportInterface $transport,
+        SocketIo\Protocol\ProtocolInterface $protocol,
+        SocketIo\Transport\TransportInterface $transport,
         $sessionId
     ) {
         // Protocol

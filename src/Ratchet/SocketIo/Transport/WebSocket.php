@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Transport;
+namespace Ratchet\SocketIo\Transport;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\MessageComponentInterface;
@@ -98,8 +98,8 @@ class WebSocket extends Transport
 
         $this->wsServer->onMessage($connection, $message);
 
-        if (!$connection->socketIOConnection->isEstablished() && $connection->WebSocket->established) {
-            $connection->socketIOConnection->isEstablished(true);
+        if (!$connection->socketIoConnection->isEstablished() && $connection->WebSocket->established) {
+            $connection->socketIoConnection->isEstablished(true);
         }
     }
 

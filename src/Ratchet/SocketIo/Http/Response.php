@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Http;
+namespace Ratchet\SocketIo\Http;
 
 use Evenement\EventEmitter;
 use Guzzle\Http\Message\Response as GuzzleResponse;

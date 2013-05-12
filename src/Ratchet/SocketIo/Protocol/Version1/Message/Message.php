@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1\Message;
+namespace Ratchet\SocketIo\Protocol\Version1\Message;
 
 /**
  * Message
@@ -44,7 +44,7 @@ class Message implements \Serializable
      * Set type
      *
      * @param  int                                                 $type
-     * @return \Ratchet\SocketIO\Protocol\Version1\Message\Message
+     * @return \Ratchet\SocketIo\Protocol\Version1\Message\Message
      */
     public function setType($type)
     {
@@ -133,7 +133,7 @@ class Message implements \Serializable
      *
      * @param string $string
      *
-     * @return \Ratchet\SocketIO\Protocol\Version1\Message\Message
+     * @return \Ratchet\SocketIo\Protocol\Version1\Message\Message
      */
     public function unserialize($string)
     {

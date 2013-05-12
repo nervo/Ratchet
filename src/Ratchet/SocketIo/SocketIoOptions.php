@@ -1,11 +1,11 @@
 <?php
 
-namespace Ratchet\SocketIO;
+namespace Ratchet\SocketIo;
 
 /**
- * SocketIO options
+ * SocketIo options
  */
-class SocketIOOptions
+class SocketIoOptions
 {
     /**
      * Options

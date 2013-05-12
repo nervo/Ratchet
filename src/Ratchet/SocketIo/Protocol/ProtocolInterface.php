@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol;
+namespace Ratchet\SocketIo\Protocol;
 
 use Ratchet\MessageComponentInterface;
 use Guzzle\Http\Message\RequestInterface;

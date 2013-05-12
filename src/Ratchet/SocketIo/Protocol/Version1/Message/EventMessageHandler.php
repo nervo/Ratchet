@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1\Message;
+namespace Ratchet\SocketIo\Protocol\Version1\Message;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 
 /**
@@ -13,16 +13,16 @@ class EventMessageHandler extends MessageHandler
     /**
      * Server
      *
-     * @var \Ratchet\SocketIO\SocketIOServerInterface
+     * @var \Ratchet\SocketIo\SocketIoServerInterface
      */
     protected $server;
 
     /**
      * Constructor
      *
-     * @param \Ratchet\SocketIO\SocketIOServerInterface $server
+     * @param \Ratchet\SocketIo\SocketIoServerInterface $server
      */
-    public function __construct(SocketIO\SocketIOServerInterface $server)
+    public function __construct(SocketIo\SocketIoServerInterface $server)
     {
         // Server
         $this->server = $server;
@@ -39,13 +39,13 @@ class EventMessageHandler extends MessageHandler
     /**
      * {@inheritdoc}
      */
-    public function onMessage(ConnectionInterface $connection, SocketIO\Protocol\Version1\Message\Message $message)
+    public function onMessage(ConnectionInterface $connection, SocketIo\Protocol\Version1\Message\Message $message)
     {
         $data = $message->getData();
 
         if ($data && isset($data['name'])) {
             $this->server->on(
-                $connection->socketIOConnection,
+                $connection->socketIoConnection,
                 (string) $data['name'],
                 isset($data['args']) ? (array) $data['args'] : null
             );

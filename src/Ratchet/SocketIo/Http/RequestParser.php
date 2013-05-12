@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Http;
+namespace Ratchet\SocketIo\Http;
 
 use Ratchet\MessageInterface;
 use Ratchet\ConnectionInterface;

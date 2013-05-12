@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol\Version1;
+namespace Ratchet\SocketIo\Protocol\Version1;
 
 /**
  * Protocol version 1 options

@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol;
+namespace Ratchet\SocketIo\Protocol;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use Ratchet\ConnectionInterface;
 use Guzzle\Http\Message\RequestInterface;
 use React\EventLoop;
@@ -13,14 +13,14 @@ class Version1 extends Protocol
     /**
      * Options
      *
-     * @var \Ratchet\SocketIO\Protocol\Version1\Options
+     * @var \Ratchet\SocketIo\Protocol\Version1\Options
      */
     protected $options;
 
     /**
      * Http request parser
      *
-     * @var \Ratchet\SocketIO\Http\HttpRequestParser
+     * @var \Ratchet\SocketIo\Http\HttpRequestParser
      */
     protected $httpRequestParser;
 
@@ -34,15 +34,15 @@ class Version1 extends Protocol
     /**
      * Constructor
      *
-     * @param SocketIO\SocketIOServerInterface $server
+     * @param SocketIo\SocketIoServerInterface $server
      * @param EventLoop\LoopInterface          $loop
-     * @param SocketIO\SocketIOOptions         $options
+     * @param SocketIo\SocketIoOptions         $options
      * @param Log\LoggerInterface              $logger
      */
     public function __construct(
-        SocketIO\SocketIOServerInterface $server,
+        SocketIo\SocketIoServerInterface $server,
         EventLoop\LoopInterface $loop,
-        SocketIO\SocketIOOptions $options,
+        SocketIo\SocketIoOptions $options,
         Log\LoggerInterface $logger = null
     ) {
         parent::__construct($server, $loop, $logger);
@@ -53,7 +53,7 @@ class Version1 extends Protocol
         );
 
         // Http Request parser
-        $this->httpRequestParser = new SocketIO\Http\RequestParser();
+        $this->httpRequestParser = new SocketIo\Http\RequestParser();
 
         // Server proxy
         $serverProxy = new Version1\ServerProxy(
@@ -66,7 +66,7 @@ class Version1 extends Protocol
         // Transports
         $this
             ->addTransport(
-                new SocketIO\Transport\WebSocket(
+                new SocketIo\Transport\WebSocket(
                     $serverProxy,
                     $this->logger
                 )
@@ -144,7 +144,7 @@ class Version1 extends Protocol
             );
         }
 
-        if (!isset($connection->socketIOConnection)) {
+        if (!isset($connection->socketIoConnection)) {
                     // Get http request
             try {
                 $httpRequest = $this->httpRequestParser->onMessage($connection, $message);
@@ -188,7 +188,7 @@ class Version1 extends Protocol
 
                 if (in_array($sessionId, $this->sessionIds)) {
                     // Set socket.io connection
-                    $connection->socketIOConnection = new Version1\Connection(
+                    $connection->socketIoConnection = new Version1\Connection(
                         $this,
                         $transport,
                         $sessionId
@@ -205,7 +205,7 @@ class Version1 extends Protocol
         } else {
 
             // Transmit message to transport
-            $connection->socketIOConnection->getTransport()->onMessage($connection, $message);
+            $connection->socketIoConnection->getTransport()->onMessage($connection, $message);
         }
     }
 
@@ -219,8 +219,8 @@ class Version1 extends Protocol
             $this->logger->debug('Protocol version ' . $this->getVersion() . ' onClose');
         }
 
-        if (isset($connection->socketIOConnection)) {
-            $connection->socketIOConnection->getTransport()->onClose($connection);
+        if (isset($connection->socketIoConnection)) {
+            $connection->socketIoConnection->getTransport()->onClose($connection);
         }
     }
 
@@ -237,8 +237,8 @@ class Version1 extends Protocol
             );
         }
 
-        if (isset($connection->socketIOConnection)) {
-            $connection->socketIOConnection->getTransport()->onError($connection, $e);
+        if (isset($connection->socketIoConnection)) {
+            $connection->socketIoConnection->getTransport()->onError($connection, $e);
         }
     }
 
@@ -273,7 +273,7 @@ class Version1 extends Protocol
      * Get http request transport
      *
      * @param  RequestInterface                      $httpRequest
-     * @return SocketIO\Transport\TransportInterface
+     * @return SocketIo\Transport\TransportInterface
      * @throws \InvalidArgumentException
      */
     protected function getHttpRequestTransport(RequestInterface $httpRequest)
@@ -329,7 +329,7 @@ class Version1 extends Protocol
         $sessionId = uniqid('', true);
 
         // Response
-        $response = new SocketIO\Http\Response($connection);
+        $response = new SocketIo\Http\Response($connection);
         $response->writeHead(
             200,
             array(
@@ -368,7 +368,7 @@ class Version1 extends Protocol
             $this->logger->debug('Server close', array($code));
         }
 
-        $response = new SocketIO\Http\Response($connection);
+        $response = new SocketIo\Http\Response($connection);
 
         $response
             ->writeHead($code)

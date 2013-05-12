@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO;
+namespace Ratchet\SocketIo;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -9,14 +9,14 @@ use Guzzle\Http\Message\RequestInterface;
 use Psr\Log;
 
 /**
- * SocketIO server
+ * SocketIo server
  */
-class SocketIOServer implements MessageComponentInterface
+class SocketIoServer implements MessageComponentInterface
 {
     /**
      * Options
      *
-     * @var \Ratchet\SocketIO\SocketIOOptions
+     * @var \Ratchet\SocketIo\SocketIoOptions
      */
     protected $options;
 
@@ -30,7 +30,7 @@ class SocketIOServer implements MessageComponentInterface
     /**
      * Http request parser
      *
-     * @var \Ratchet\SocketIO\Http\HttpRequestParser
+     * @var \Ratchet\SocketIo\Http\HttpRequestParser
      */
     protected $httpRequestParser;
 
@@ -44,22 +44,22 @@ class SocketIOServer implements MessageComponentInterface
     /**
      * Constructor
      *
-     * @param SocketIOServerInterface $server
+     * @param SocketIoServerInterface $server
      * @param EventLoop\LoopInterface $loop
-     * @param SocketIOOptions         $options
+     * @param SocketIoOptions         $options
      * @param Log\LoggerInterface     $logger
      */
     public function __construct(
-        SocketIOServerInterface $server,
+        SocketIoServerInterface $server,
         EventLoop\LoopInterface $loop,
-        SocketIOOptions $options = null,
+        SocketIoOptions $options = null,
         Log\LoggerInterface $logger = null
     ) {
         // Http Request parser
         $this->httpRequestParser = new Http\RequestParser();
 
         // Options
-        $this->options = $options ? $options : new SocketIOOptions();
+        $this->options = $options ? $options : new SocketIoOptions();
 
         // Logger
         $this->logger = $logger;
@@ -105,7 +105,7 @@ class SocketIOServer implements MessageComponentInterface
         }
 
         //if (!$protocol) {
-        if (!isset($connection->socketIOConnection)) {
+        if (!isset($connection->socketIoConnection)) {
             // Get http request
             try {
                 $httpRequest = $this->httpRequestParser->onMessage($connection, $message);
@@ -137,7 +137,7 @@ class SocketIOServer implements MessageComponentInterface
         } else {
 
             // Transmit message to protocol
-            $connection->socketIOConnection->getProtocol()->onMessage($connection, $message);
+            $connection->socketIoConnection->getProtocol()->onMessage($connection, $message);
         }
     }
 
@@ -151,8 +151,8 @@ class SocketIOServer implements MessageComponentInterface
             $this->logger->debug('Server onClose');
         }
 
-        if (isset($connection->socketIOConnection)) {
-            $connection->socketIOConnection->getProtocol()->onClose($connection);
+        if (isset($connection->socketIoConnection)) {
+            $connection->socketIoConnection->getProtocol()->onClose($connection);
         }
     }
 
@@ -166,8 +166,8 @@ class SocketIOServer implements MessageComponentInterface
             $this->logger->debug('Server onError', array(get_class($e), $e->getMessage()));
         }
 
-        if (isset($connection->socketIOConnection)) {
-            $connection->socketIOConnection->getProtocol()->onError($connection->socketIOConnection, $e);
+        if (isset($connection->socketIoConnection)) {
+            $connection->socketIoConnection->getProtocol()->onError($connection->socketIoConnection, $e);
         }
     }
 

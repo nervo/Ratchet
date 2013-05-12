@@ -1,6 +1,6 @@
 <?php
 
-namespace Ratchet\SocketIO\Transport;
+namespace Ratchet\SocketIo\Transport;
 
 use Ratchet\MessageComponentInterface;
 

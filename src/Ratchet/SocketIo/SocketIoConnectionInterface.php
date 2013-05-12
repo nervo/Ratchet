@@ -1,13 +1,13 @@
 <?php
 
-namespace Ratchet\SocketIO;
+namespace Ratchet\SocketIo;
 
 use Ratchet\ConnectionInterface;
 
 /**
- * SocketIO connection
+ * SocketIo connection
  */
-interface SocketIOConnectionInterface extends ConnectionInterface
+interface SocketIoConnectionInterface extends ConnectionInterface
 {
     /**
      * Is established
@@ -20,14 +20,14 @@ interface SocketIOConnectionInterface extends ConnectionInterface
     /**
      * Get protocol
      *
-     * @return \Ratchet\SocketIO\Protocol\ProtocolInterface
+     * @return \Ratchet\SocketIo\Protocol\ProtocolInterface
      */
     public function getProtocol();
 
     /**
      * Get transport
      *
-     * @return \Ratchet\SocketIO\Transport\TransportInterface
+     * @return \Ratchet\SocketIo\Transport\TransportInterface
      */
     public function getTransport();
 

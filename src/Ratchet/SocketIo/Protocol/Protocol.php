@@ -1,8 +1,8 @@
 <?php
 
-namespace Ratchet\SocketIO\Protocol;
+namespace Ratchet\SocketIo\Protocol;
 
-use Ratchet\SocketIO;
+use Ratchet\SocketIo;
 use React\EventLoop;
 use Psr\Log;
 
@@ -14,7 +14,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Server
      *
-     * @var SocketIO\SocketIOServerInterface
+     * @var \Ratchet\SocketIo\SocketIoServerInterface
      */
     protected $server;
 
@@ -49,12 +49,12 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Constructor
      *
-     * @param SocketIO\SocketIOServerInterface $server
-     * @param EventLoop\LoopInterface          $loop
-     * @param Log\LoggerInterface              $logger
+     * @param \Ratchet\SocketIo\SocketIoServerInterface $server
+     * @param \React\EventLoop\LoopInterface          $loop
+     * @param \Psr\Log\LoggerInterface              $logger
      */
     public function __construct(
-        SocketIO\SocketIOServerInterface $server,
+        SocketIo\SocketIoServerInterface $server,
         EventLoop\LoopInterface $loop,
         Log\LoggerInterface $logger = null
     ) {
@@ -91,10 +91,10 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Add support for a specific transport of the Socket.IO protocol
      *
-     * @param SocketIO\Transport\TransportInterface $transport
-     * @return $this
+     * @param \Racthet\SocketIo\Transport\TransportInterface $transport
+     * @return \Ratchet\SocketIo\Protocol\Protocol
      */
-    protected function addTransport(SocketIO\Transport\TransportInterface $transport)
+    protected function addTransport(SocketIo\Transport\TransportInterface $transport)
     {
         $this->transports[$transport->getType()] = $transport;
 
