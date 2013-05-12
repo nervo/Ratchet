@@ -52,7 +52,8 @@ class ConnectMessageHandler extends MessageHandler
     /**
      * {@inheritdoc}
      */
-    public function onMessage(ConnectionInterface $connection, SocketIO\Protocol\Version1\Message\Message $message)
+    public function onClose(ConnectionInterface $connection)
     {
+        $this->server->onDisconnect($connection->socketIOConnection);
     }
 }

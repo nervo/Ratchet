@@ -181,7 +181,11 @@ class ServerProxy implements MessageComponentInterface
 
         $this->connections->detach($connection);
 
-        $this->server->onDisconnect($connection->socketIOConnection);
+        foreach ($this->messageHandlers as $messageHandler) {
+            $messageHandler->onClose(
+                $connection
+            );
+        }
     }
 
     /**

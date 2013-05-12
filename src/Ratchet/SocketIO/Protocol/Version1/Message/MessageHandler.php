@@ -32,10 +32,20 @@ abstract class MessageHandler
      * @param \Ratchet\ConnectionInterface $connection
      * @param \Ratchet\SocketIO\Protocol\Version1\Message\Message
      */
-    abstract public function onMessage(
+    public function onMessage(
         ConnectionInterface $connection,
         SocketIO\Protocol\Version1\Message\Message $message
-    );
+    ) {
+    }
+
+    /**
+     * On close
+     *
+     * @param \Ratchet\ConnectionInterface $connection
+     */
+    public function onClose(ConnectionInterface $connection)
+    {
+    }
 
     /**
      * Is message type
