@@ -2,20 +2,39 @@
 
 namespace Ratchet\SocketIO;
 
-use Ratchet\MessageComponentInterface;
-use Ratchet\ConnectionInterface;
-
 /**
  * SocketIO server interface
  */
-interface SocketIOServerInterface extends MessageComponentInterface
+interface SocketIOServerInterface
 {
     /**
-     * On event
-     * 
-     * @param \Ratchet\ConnectionInterface $connection
-     * @param string     $name
-     * @param array|null $args
+     * On connection
+     *
+     * @param SocketIOConnectionInterface $connection
      */
-    public function onEvent(ConnectionInterface $connection, $name, array $args = null);
+    public function onConnection(SocketIOConnectionInterface $connection);
+
+    /**
+     * On
+     *
+     * @param SocketIOConnectionInterface $connection
+     * @param string                      $event
+     * @param array                       $args
+     */
+    public function on(SocketIOConnectionInterface $connection, $event, array $args = null);
+
+    /**
+     * On disconnect
+     *
+     * @param SocketIOConnectionInterface $connection
+     */
+    public function onDisconnect(SocketIOConnectionInterface $connection);
+
+    /**
+     * On error
+     *
+     * @param SocketIOConnectionInterface $connection
+     * @param \Exception                  $e
+     */
+    public function onError(SocketIOConnectionInterface $connection, \Exception $e);
 }

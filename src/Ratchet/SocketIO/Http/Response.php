@@ -20,23 +20,6 @@ class Response extends EventEmitter implements WritableStreamInterface
     public function __construct(ConnectionInterface $conn)
     {
         $this->conn = $conn;
-
-        /*
-        $that = $this;
-
-        $this->conn->on('end', function () use ($that) {
-            $that->close();
-        });
-
-        $this->conn->on('error', function ($error) use ($that) {
-            $that->emit('error', array($error, $that));
-            $that->close();
-        });
-
-        $this->conn->on('drain', function () use ($that) {
-            $that->emit('drain');
-        });
-        */
     }
 
     public function isWritable()
@@ -44,7 +27,7 @@ class Response extends EventEmitter implements WritableStreamInterface
         return $this->writable;
     }
 
-    public function ___writeContinue()
+    public function writeContinue()
     {
         if ($this->headWritten) {
             throw new \Exception('Response head has already been written.');
@@ -73,6 +56,8 @@ class Response extends EventEmitter implements WritableStreamInterface
         $this->conn->send($data);
 
         $this->headWritten = true;
+
+        return $this;
     }
 
     public function write($data)
@@ -102,12 +87,11 @@ class Response extends EventEmitter implements WritableStreamInterface
             $this->conn->send("0\r\n\r\n");
         }
 
-        //$this->emit('close');
-        //$this->removeAllListeners();
-
         if (!$this->keepAlive) {
             $this->conn->close();
         }
+
+        return $this;
     }
 
     public function close()
@@ -119,9 +103,7 @@ class Response extends EventEmitter implements WritableStreamInterface
         $this->closed = true;
 
         $this->writable = false;
-        //$this->emit('close');
-        //$this->removeAllListeners();
-        
-        //$this->conn->close();
+
+        $this->conn->close();
     }
 }

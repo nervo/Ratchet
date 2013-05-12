@@ -4,47 +4,82 @@ namespace Ratchet\SocketIO;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use Ratchet\SocketIO\Protocol;
-use Ratchet\SocketIO\Http;
-use Ratchet\SocketIO\Message;
+use React\EventLoop;
+use Guzzle\Http\Message\RequestInterface;
+use Psr\Log;
 
+/**
+ * SocketIO server
+ */
 class SocketIOServer implements MessageComponentInterface
 {
     /**
-     * Buffers incoming HTTP requests returning a Guzzle Request when coalesced
-     * @var HttpRequestParser
-     * @note May not expose this in the future, may do through facade methods
+     * Options
+     *
+     * @var \Ratchet\SocketIO\SocketIOOptions
      */
-    public $httpRequestParser;
+    protected $options;
 
     /**
-     * Manage the various SpcketIO protocols to support
-     * @var ProtocolManager
-     * @note May not expose this in the future, may do through facade methods
+     * Logger
+     *
+     * @var \Psr\Log\LoggerInterface
      */
-    public $protocolManager;
+    protected $logger;
 
     /**
-     * This class just makes it 1 step easier to use Topic objects in WAMP
-     * If you're looking at the source code, look in the __construct of this
-     *  class and use that to make your application instead of using this
+     * Http request parser
+     *
+     * @var \Ratchet\SocketIO\Http\HttpRequestParser
      */
-    public function __construct(SocketIOServerInterface $server, array $options = array())
-    {
-        // Request parser
+    protected $httpRequestParser;
+
+    /**
+     * Protocols
+     *
+     * @var array
+     */
+    protected $protocols = array();
+
+    /**
+     * Constructor
+     *
+     * @param SocketIOServerInterface $server
+     * @param EventLoop\LoopInterface $loop
+     * @param SocketIOOptions         $options
+     * @param Log\LoggerInterface     $logger
+     */
+    public function __construct(
+        SocketIOServerInterface $server,
+        EventLoop\LoopInterface $loop,
+        SocketIOOptions $options = null,
+        Log\LoggerInterface $logger = null
+    ) {
+        // Http Request parser
         $this->httpRequestParser = new Http\RequestParser();
 
-        // Message proxy
-        $messageProxy = new Message\MessageProxy($server);
-        
-        // Protocol manager
-        $this->protocolManager = new Protocol\ProtocolManager();
-        $this->protocolManager
-            ->enableProtocol(
-                new Protocol\Version1\Protocol(
-                    $messageProxy,
-                    $options
+        // Options
+        $this->options = $options ? $options : new SocketIOOptions();
+
+        // Logger
+        $this->logger = $logger;
+
+        // Log
+        if ($this->logger) {
+            $this->logger->info('Initialize server', $this->options->getAll());
+        }
+
+        // Protocols
+        $this
+            ->addProtocol(
+                new Protocol\Version1(
+                    $server,
+                    $loop,
+                    $this->options,
+                    $this->logger
                 )
+            )->enableProtocolVersions(
+                $this->options->getProtocolVersions()
             );
     }
 
@@ -53,7 +88,10 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onOpen(ConnectionInterface $connection)
     {
-        $connection->socketIO = new \StdClass();
+        // Log
+        if ($this->logger) {
+            $this->logger->debug('Server onOpen');
+        }
     }
 
     /**
@@ -61,30 +99,46 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $connection, $message)
     {
-        if (!isset($connection->socketIO->protocol)) {
+        // Log
+        if ($this->logger) {
+            $this->logger->debug('Server onMessage', array(utf8_encode($message)));
+        }
+
+        //if (!$protocol) {
+        if (!isset($connection->socketIOConnection)) {
+            // Get http request
             try {
-                if (null === ($request = $this->httpRequestParser->onMessage($connection, $message))) {
-                    return;
-                }
+                $httpRequest = $this->httpRequestParser->onMessage($connection, $message);
             } catch (\OverflowException $oe) {
                 return $this->close($connection, 413);
             }
 
-            $connection->socketIO->request = $request;
-        
+            if (!$httpRequest) {
+                return;
+            }
+
             // Get protocol
             try {
-                $connection->socketIO->protocol = $this->protocolManager->getRequestProtocol(
-                    $connection->socketIO->request
+                $protocol = $this->getHttpRequestProtocol(
+                    $httpRequest
                 );
-                $connection->socketIO->protocol->onOpen($connection);
             } catch (\InvalidArgumentException $e) {
                 return $this->close($connection);
             }
+
+            // Log
+            if ($this->logger) {
+                $this->logger->debug('Server onMessage get protocol version', array($protocol->getVersion()));
+            }
+
+            // Open protocol
+            $protocol->onOpen($connection);
+            $protocol->onMessage($connection, $message);
+        } else {
+
+            // Transmit message to protocol
+            $connection->socketIOConnection->getProtocol()->onMessage($connection, $message);
         }
-        
-        // Transmit message to protocol
-        $connection->socketIO->protocol->onMessage($connection, $message);
     }
 
     /**
@@ -92,8 +146,13 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onClose(ConnectionInterface $connection)
     {
-        if (isset($connection->socketIO->protocol)) {
-            $connection->socketIO->protocol->onClose($connection);
+        // Log
+        if ($this->logger) {
+            $this->logger->debug('Server onClose');
+        }
+
+        if (isset($connection->socketIOConnection)) {
+            $connection->socketIOConnection->getProtocol()->onClose($connection);
         }
     }
 
@@ -102,21 +161,82 @@ class SocketIOServer implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $connection, \Exception $e)
     {
-        if (isset($connection->socketIO->protocol)) {
-            $connection->socketIO->protocol->onError($connection, $e);
+        // Log
+        if ($this->logger) {
+            $this->logger->debug('Server onError', array(get_class($e), $e->getMessage()));
+        }
+
+        if (isset($connection->socketIOConnection)) {
+            $connection->socketIOConnection->getProtocol()->onError($connection->socketIOConnection, $e);
         }
     }
 
     /**
      * Close a connection with an HTTP response
-     * @param  \Ratchet\ConnectionInterface $connection
-     * @param  int                          $code HTTP status code
-     * @return void
+     * @param \Ratchet\ConnectionInterface $connection
+     * @param int                          $code       HTTP status code
      */
     protected function close(ConnectionInterface $connection, $code = 400)
     {
+        // Log
+        if ($this->logger) {
+            $this->logger->debug('Server close', array($code));
+        }
+
         $response = new Http\Response($connection);
-        $response->writeHead($code);
-        $response->end();
+
+        $response
+            ->writeHead($code)
+            ->end();
+    }
+
+    /**
+     * Get http request protocol server
+     *
+     * @param  RequestInterface           $httpRequest
+     * @return Protocol\ProtocolInterface
+     * @throws \InvalidArgumentException
+     */
+    protected function getHttpRequestProtocol(RequestInterface $httpRequest)
+    {
+        foreach ($this->protocols as $protocol) {
+            if ($protocol->isEnabled() && $protocol->isHttpRequestProtocol($httpRequest)) {
+                return $protocol;
+            }
+        }
+
+        throw new \InvalidArgumentException('Protocol server not found');
+    }
+
+    /**
+     * Add protocol
+     *
+     * @param Protocol\ProtocolInterface $protocol
+     * @return $this
+     */
+    protected function addProtocol(Protocol\ProtocolInterface $protocol)
+    {
+        $this->protocols[$protocol->getVersion()] = $protocol;
+
+        return $this;
+    }
+
+    /**
+     * Enable protocol versions
+     *
+     * @param array $versions
+     * @return $this
+     */
+    protected function enableProtocolVersions(array $versions = array())
+    {
+        foreach ($versions as $version) {
+            foreach ($this->protocols as $protocol) {
+                if ($protocol->isVersion($version)) {
+                    $protocol->isEnabled(true);
+                }
+            }
+        }
+
+        return $this;
     }
 }
