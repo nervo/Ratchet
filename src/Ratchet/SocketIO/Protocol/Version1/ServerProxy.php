@@ -92,6 +92,14 @@ class ServerProxy implements MessageComponentInterface
                 $server
             )
         )->addMessageHandler(
+            new Message\MessageMessageHandler(
+                $server
+            )
+        )->addMessageHandler(
+            new Message\JsonMessageMessageHandler(
+                $server
+            )
+        )->addMessageHandler(
             new Message\EventMessageHandler(
                 $server
             )
