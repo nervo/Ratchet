@@ -8,6 +8,12 @@ CHANGELOG
 
 ---
 
+* 0.3.0 (2013-xx-xx)
+
+ * Added Symfony/2.2 based HTTP Router component to allowing for a single Ratchet server to handle multiple apps -> Ratchet\Http\Router
+ * BC: Decoupled HTTP from WebSocket component -> Ratchet\Http\HttpServer
+ * Updated dependency to React/0.3
+
 * 0.2.5 (2013-04-01)
 
  * Fixed Hixie-76 handshake bug

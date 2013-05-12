@@ -8,10 +8,8 @@ cover:
 	phpunit --coverage-text --coverage-html=reports/coverage
 
 abtests:
-	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-libevent.php 8002 &
-	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-stream.php 8001 &
-	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-libev.php 8004 &
-	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-libuv.php 8005 &
+	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-libevent.php 8001 &
+	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-stream.php 8002 &
 	ulimit -n 2048 && php tests/AutobahnTestSuite/bin/fuzzingserver-noutf8.php 8003 &
 	wstest -m testeeserver -w ws://localhost:8000 &
 	wstest -m fuzzingclient -s tests/AutobahnTestSuite/fuzzingclient-all.json
@@ -32,4 +30,5 @@ apidocs:
 		-s vendor/react \
 		-s vendor/guzzle \
 		-s vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Session \
+		-s vendor/symfony/http-foundation/Symfony/Component/Routing \
 		-s vendor/evenement/evenement/src/Evenement
