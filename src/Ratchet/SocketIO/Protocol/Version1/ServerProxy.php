@@ -95,6 +95,10 @@ class ServerProxy implements MessageComponentInterface
             new Message\EventMessageHandler(
                 $server
             )
+        )->addMessageHandler(
+            new Message\DisconnectMessageHandler(
+                $server
+            )
         );
 
         // Heartbeat message handler

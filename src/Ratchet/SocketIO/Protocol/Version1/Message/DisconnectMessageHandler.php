@@ -6,9 +6,9 @@ use Ratchet\SocketIO;
 use Ratchet\ConnectionInterface;
 
 /**
- * Connect message handler
+ * Disconnect message handler
  */
-class ConnectMessageHandler extends MessageHandler
+class DisconnectMessageHandler extends MessageHandler
 {
     /**
      * Server
@@ -33,7 +33,7 @@ class ConnectMessageHandler extends MessageHandler
      */
     public function getType()
     {
-        return 1;
+        return 0;
     }
 
     /**
