@@ -19,10 +19,10 @@ class HandshakeVerifier {
         $passes += (int)$this->verifyMethod($request->getMethod());
         $passes += (int)$this->verifyHTTPVersion($request->getProtocolVersion());
         $passes += (int)$this->verifyRequestURI($request->getPath());
-        $passes += (int)$this->verifyHost($request->getHeader('Host', true));
-        $passes += (int)$this->verifyUpgradeRequest($request->getHeader('Upgrade', true));
-        $passes += (int)$this->verifyConnection($request->getHeader('Connection', true));
-        $passes += (int)$this->verifyKey($request->getHeader('Sec-WebSocket-Key', true));
+        $passes += (int)$this->verifyHost((string)$request->getHeader('Host'));
+        $passes += (int)$this->verifyUpgradeRequest((string)$request->getHeader('Upgrade'));
+        $passes += (int)$this->verifyConnection((string)$request->getHeader('Connection'));
+        $passes += (int)$this->verifyKey((string)$request->getHeader('Sec-WebSocket-Key'));
         //$passes += (int)$this->verifyVersion($headers['Sec-WebSocket-Version']); // Temporarily breaking functionality
 
         return (7 === $passes);
@@ -111,6 +111,22 @@ class HandshakeVerifier {
      */
     public function verifyKey($val) {
         return (16 === strlen(base64_decode((string)$val)));
+    }
+
+    /**
+     * Verify Origin matches RFC6454 IF it is set
+     * Origin is an optional field
+     * @param string|null
+     * @return bool
+     * @todo Implement verification functionality - see section 4.2.1.7
+     */
+    public function verifyOrigin($val) {
+        if (null === $val) {
+            return true;
+        }
+
+        // logic here
+        return true;
     }
 
     /**

@@ -3,7 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
+<<<<<<< HEAD
+    "hash": "6006ea344879ef78bf1a490e630a74fc",
+=======
     "hash": "a62a14a02670ed6aedd683b1cb2b414f",
+>>>>>>> origin/master
     "packages": [
         {
             "name": "evenement/evenement",
@@ -47,17 +51,30 @@
         },
         {
             "name": "guzzle/common",
+<<<<<<< HEAD
+            "version": "v3.4.3",
+=======
             "version": "v3.7.3",
+>>>>>>> origin/master
             "target-dir": "Guzzle/Common",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/common.git",
+<<<<<<< HEAD
+                "reference": "v3.4.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/common/zipball/v3.4.3",
+                "reference": "v3.4.3",
+=======
                 "reference": "bf73c87375f60861f8c7ccc7b95878023ade5306"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/common/zipball/bf73c87375f60861f8c7ccc7b95878023ade5306",
                 "reference": "bf73c87375f60861f8c7ccc7b95878023ade5306",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -67,7 +84,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
+                    "dev-master": "3.4-dev"
+=======
                     "dev-master": "3.7-dev"
+>>>>>>> origin/master
                 }
             },
             "autoload": {
@@ -87,21 +108,38 @@
                 "event",
                 "exception"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-30 20:30:19"
+        },
+        {
+            "name": "guzzle/http",
+            "version": "v3.4.3",
+=======
             "time": "2013-09-08 21:09:18"
         },
         {
             "name": "guzzle/http",
             "version": "v3.7.3",
+>>>>>>> origin/master
             "target-dir": "Guzzle/Http",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/http.git",
+<<<<<<< HEAD
+                "reference": "v3.4.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/http/zipball/v3.4.3",
+                "reference": "v3.4.3",
+=======
                 "reference": "1034125dfd906b73119e535f03153a62fccb1989"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/http/zipball/1034125dfd906b73119e535f03153a62fccb1989",
                 "reference": "1034125dfd906b73119e535f03153a62fccb1989",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -116,7 +154,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
+                    "dev-master": "3.4-dev"
+=======
                     "dev-master": "3.7-dev"
+>>>>>>> origin/master
                 }
             },
             "autoload": {
@@ -144,21 +186,38 @@
                 "http",
                 "http client"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-30 20:30:19"
+        },
+        {
+            "name": "guzzle/parser",
+            "version": "v3.4.3",
+=======
             "time": "2013-09-06 11:34:26"
         },
         {
             "name": "guzzle/parser",
             "version": "v3.7.3",
+>>>>>>> origin/master
             "target-dir": "Guzzle/Parser",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/parser.git",
+<<<<<<< HEAD
+                "reference": "v3.4.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/parser/zipball/v3.4.3",
+                "reference": "v3.4.3",
+=======
                 "reference": "a25c2ddda1c52fb69a4ee56eb530b13ddd9573c2"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/parser/zipball/a25c2ddda1c52fb69a4ee56eb530b13ddd9573c2",
                 "reference": "a25c2ddda1c52fb69a4ee56eb530b13ddd9573c2",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -167,7 +226,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
+                    "dev-master": "3.4-dev"
+=======
                     "dev-master": "3.7-dev"
+>>>>>>> origin/master
                 }
             },
             "autoload": {
@@ -188,21 +251,38 @@
                 "message",
                 "url"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-26 15:47:38"
+        },
+        {
+            "name": "guzzle/stream",
+            "version": "v3.4.3",
+=======
             "time": "2013-07-11 22:46:03"
         },
         {
             "name": "guzzle/stream",
             "version": "v3.7.3",
+>>>>>>> origin/master
             "target-dir": "Guzzle/Stream",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/stream.git",
+<<<<<<< HEAD
+                "reference": "v3.4.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/stream/zipball/v3.4.3",
+                "reference": "v3.4.3",
+=======
                 "reference": "a86111d9ac7db31d65a053c825869409fe8fc83f"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/guzzle/stream/zipball/a86111d9ac7db31d65a053c825869409fe8fc83f",
                 "reference": "a86111d9ac7db31d65a053c825869409fe8fc83f",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -215,7 +295,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
+                    "dev-master": "3.4-dev"
+=======
                     "dev-master": "3.7-dev"
+>>>>>>> origin/master
                 }
             },
             "autoload": {
@@ -241,21 +325,38 @@
                 "component",
                 "stream"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-26 15:47:38"
+        },
+        {
+            "name": "react/event-loop",
+            "version": "v0.3.1",
+=======
             "time": "2013-07-30 22:07:23"
         },
         {
             "name": "react/event-loop",
             "version": "v0.3.3",
+>>>>>>> origin/master
             "target-dir": "React/EventLoop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/event-loop.git",
+<<<<<<< HEAD
+                "reference": "v0.3.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/event-loop/zipball/v0.3.1",
+                "reference": "v0.3.1",
+=======
                 "reference": "v0.3.3"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/reactphp/event-loop/zipball/v0.3.3",
                 "reference": "v0.3.3",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -284,21 +385,38 @@
             "keywords": [
                 "event-loop"
             ],
+<<<<<<< HEAD
+            "time": "2013-01-14 23:11:47"
+        },
+        {
+            "name": "react/socket",
+            "version": "v0.3.1",
+=======
             "time": "2013-07-08 22:38:22"
         },
         {
             "name": "react/socket",
             "version": "v0.3.2",
+>>>>>>> origin/master
             "target-dir": "React/Socket",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
+<<<<<<< HEAD
+                "reference": "v0.3.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/socket/zipball/v0.3.1",
+                "reference": "v0.3.1",
+=======
                 "reference": "v0.3.2"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/reactphp/socket/zipball/v0.3.2",
                 "reference": "v0.3.2",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -326,21 +444,38 @@
             "keywords": [
                 "Socket"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-20 14:53:10"
+        },
+        {
+            "name": "react/stream",
+            "version": "v0.3.1",
+=======
             "time": "2013-04-26 20:23:10"
         },
         {
             "name": "react/stream",
             "version": "v0.3.3",
+>>>>>>> origin/master
             "target-dir": "React/Stream",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stream.git",
+<<<<<<< HEAD
+                "reference": "v0.3.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/stream/zipball/v0.3.1",
+                "reference": "v0.3.1",
+=======
                 "reference": "v0.3.3"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/reactphp/stream/zipball/v0.3.3",
                 "reference": "v0.3.3",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -371,21 +506,38 @@
                 "pipe",
                 "stream"
             ],
+<<<<<<< HEAD
+            "time": "2013-04-21 13:25:49"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.2.1",
+=======
             "time": "2013-07-09 00:44:12"
         },
         {
             "name": "symfony/event-dispatcher",
             "version": "v2.3.4",
+>>>>>>> origin/master
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
+<<<<<<< HEAD
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/v2.2.1",
+                "reference": "v2.2.1",
+=======
                 "reference": "41c9826457c65fa3cf746f214985b7ca9cba42f8"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/41c9826457c65fa3cf746f214985b7ca9cba42f8",
                 "reference": "41c9826457c65fa3cf746f214985b7ca9cba42f8",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -429,17 +581,30 @@
         },
         {
             "name": "symfony/http-foundation",
+<<<<<<< HEAD
+            "version": "v2.2.1",
+=======
             "version": "v2.3.4",
+>>>>>>> origin/master
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
+<<<<<<< HEAD
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/v2.2.1",
+                "reference": "v2.2.1",
+=======
                 "reference": "fdf130fe65457aedbc4639a22f4ef9d3be5c002c"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/fdf130fe65457aedbc4639a22f4ef9d3be5c002c",
                 "reference": "fdf130fe65457aedbc4639a22f4ef9d3be5c002c",
+>>>>>>> origin/master
                 "shasum": ""
             },
             "require": {
@@ -475,7 +640,69 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
+            "time": "2013-04-06 10:15:43"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v2.2.1",
+            "target-dir": "Symfony/Component/Routing",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Routing.git",
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/v2.2.1",
+                "reference": "v2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "doctrine/common": ">=2.2,<3.0",
+                "psr/log": ">=1.0,<2.0",
+                "symfony/config": ">=2.2,<2.3-dev",
+                "symfony/yaml": ">=2.0,<3.0"
+            },
+            "suggest": {
+                "doctrine/common": "~2.2",
+                "symfony/config": "2.2.*",
+                "symfony/yaml": "2.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Routing\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Routing Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-03-23 12:03:22"
+=======
             "time": "2013-08-26 05:49:51"
+>>>>>>> origin/master
         }
     ],
     "packages-dev": [
@@ -489,7 +716,7 @@
 
     ],
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.9"
     },
     "platform-dev": [
 

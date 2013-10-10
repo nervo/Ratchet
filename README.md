@@ -3,22 +3,22 @@
 [![Build Status](https://secure.travis-ci.org/cboden/Ratchet.png?branch=master)](http://travis-ci.org/cboden/Ratchet)
 
 A PHP 5.3 library for asynchronously serving WebSockets.
-Build up your application through simple interfaces and re-use your application without changing any of its code just by combining different components.
+Build up your application through simple interfaces and re-use your application without changing any of its code just by combining different components. 
 
 ##WebSocket Compliance
 
 * Supports the RFC6455, HyBi-10+, and Hixie76 protocol versions (at the same time)
-* Tested on Chrome 13 - 26, Firefox 6 - 20, Safari 5.0.1 - 6, iOS 4.2 - 6
+* Tested on Chrome 13 - 27, Firefox 6 - 21, Safari 5.0.1 - 6, iOS 4.2 - 6
 * Ratchet [passes](http://socketo.me/reports/ab/) the [Autobahn Testsuite](http://autobahn.ws/testsuite) (non-binary messages)
 
 ##Requirements
 
 Shell access is required and root access is recommended.
-To avoid proxy/firewall blockage it's recommended WebSockets are requested on port 80 or 443 (SSL), which requires root access.
+To avoid proxy/firewall blockage it's recommended WebSockets are requested on port 80, which requires root access.
 In order to do this, along with your sync web stack, you can either use a reverse proxy or two separate machines.
 You can find more details in the [server conf docs](http://socketo.me/docs/deploy#serverconfiguration).
 
-PHP 5.3.9 (or higher) is required. If you have access, PHP 5.4 is *highly* recommended for its performance improvements.
+PHP 5.3.3 (or higher) is required. If you have access, PHP 5.4 is *highly* recommended for its performance improvements.
 
 ### Documentation
 
@@ -36,9 +36,8 @@ Need help?  Have a question?  Want to provide feedback?  Write a message on the 
 <?php
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use Ratchet\Http\RoutedHttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\Tests\AbFuzzyServer;
+use Ratchet\WebSocket\WsServer;
 
     require __DIR__ . '/vendor/autoload.php';
 
@@ -75,11 +74,7 @@ class Chat implements MessageComponentInterface {
 }
 
     // Run the server application through the WebSocket protocol on port 8080
-    $router = new RoutedHttpServer;
-    $router->addRoute('/echo', new AbFuzzyServer);
-    $router->addRoute('/chat', new Chat);
-
-    $server = IoServer::factory($router, 8000);
+    $server = IoServer::factory(new WsServer(new Chat), 8080);
     $server->run();
 ```
 

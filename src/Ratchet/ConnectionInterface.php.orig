@@ -5,7 +5,11 @@ namespace Ratchet;
  * The version of Ratchet being used
  * @var string
  */
+<<<<<<< HEAD
+const VERSION = 'Ratchet/0.3-beta';
+=======
 const VERSION = 'Ratchet/0.2.7';
+>>>>>>> origin/master
 
 /**
  * A proxy object representing a connection to the application
