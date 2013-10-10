@@ -5,7 +5,7 @@ namespace Ratchet;
  * The version of Ratchet being used
  * @var string
  */
-const VERSION = 'Ratchet/0.2.5';
+const VERSION = 'Ratchet/0.2.7';
 
 /**
  * A proxy object representing a connection to the application
@@ -15,7 +15,7 @@ interface ConnectionInterface {
     /**
      * Send data to the connection
      * @param  string $data
-     * @return ConnectionInterface
+     * @return \Ratchet\ConnectionInterface
      */
     function send($data);
 
